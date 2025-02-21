@@ -1,21 +1,20 @@
 require("dotenv").config();
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
+const connectDB = require("./src/config/data");
+const authRoutes = require("./src/routes/authRoutes");
 
 const app = express();
 
+// Connect Database
+connectDB();
+
+// Middleware
 app.use(express.json());
 app.use(cors());
 
-// Database connection
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.error(err));
+// Routes
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.send("TalkFow Backend is Running...");
