@@ -12,7 +12,7 @@ const Dashboard = () => {
     <div className="flex h-screen">
       {/* Sidebar */}
       <aside className="w-64 bg-gradient-to-r from-blue-600 to-purple-700 text-white p-5 flex flex-col">
-        <h1 className="text-3xl font-bold text-center mb-6">TalkFlow</h1>
+        <h1 className="text-3xl font-bold text-center mb-6 mt-2">TalkFlow</h1>
 
         {/* Navigation Links */}
         <nav className="flex flex-col space-y-4">
