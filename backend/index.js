@@ -1,9 +1,11 @@
 require("dotenv").config();
 const express = require("express");
+const passport = require("passport");
 const cors = require("cors");
 const connectDB = require("./src/config/data");
 const authRoutes = require("./src/routes/authRoutes");
 const userRoutes = require("./src/routes/userRoutes");
+const friendRoutes = require("./src/routes/friendRoutes");
 
 const app = express();
 
@@ -13,10 +15,13 @@ connectDB();
 // Middleware
 app.use(express.json());
 app.use(cors());
+app.use(passport.initialize());
 
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/friends", friendRoutes);
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.send("TalkFow Backend is Running...");

@@ -25,3 +25,18 @@ export const login = async (userData) => {
     throw error.response?.data || "Login failed";
   }
 };
+
+// google login
+export const googleLogin = async (tokenId) => {
+  try {
+    const response = await fetch(`${API_URL}/google`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tokenId }),
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("Google Login Error", error);
+    throw error;
+  }
+};

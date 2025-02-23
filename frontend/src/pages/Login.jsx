@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../api/auth";
+import { login, googleLogin } from "../api/auth";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -20,6 +21,21 @@ const Login = () => {
       setError(err.message || "Something went wrong");
     }
   };
+
+  const handleGoogleSuccess = async (response) => {
+    try {
+      const data = await googleLogin(response.tokenId);
+      localStorage.setItem("userToken", data.token);
+      navigate("/dashboard");
+    } catch (err) {
+      setError("Google login failed");
+    }
+  };
+
+  const handleGoogleFailure = (response) => {
+    setError("Google Sign-In Failed");
+  };
+
   return (
     <div className="flex justify-center items-center h-screen bg-gradient-to-r from-blue-600 to-purple-800">
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
@@ -54,9 +70,14 @@ const Login = () => {
 
         <div className="text-center my-4">OR</div>
 
-        <button className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg transition">
-          Sign in with Google
-        </button>
+        <GoogleLogin
+          clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+          buttonText="Sign in with Google"
+          onSuccess={handleGoogleSuccess}
+          onFailure={handleGoogleFailure}
+          cookiePolicy={"single_host_origin"}
+          className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg transition"
+        />
 
         <p className="text-center mt-4 text-gray-700">
           Don't have an account?{" "}
