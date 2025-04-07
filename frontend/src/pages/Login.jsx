@@ -2,23 +2,40 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login, googleLogin } from "../api/auth";
 import { GoogleLogin } from "@react-oauth/google";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/authSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     try {
       const data = await login({ email, password });
-      localStorage.setItem("userToken", data.token);
+      dispatch(
+        setUser({
+          user: {
+            _id: data._id,
+            name: data.name,
+            email: data.email,
+          },
+          token: data.token,
+        })
+      );
       navigate("/dashboard");
     } catch (err) {
       setError(err.message || "Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -63,8 +80,9 @@ const Login = () => {
           <button
             type="submit"
             className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition"
+            disabled={loading}
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 

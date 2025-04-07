@@ -1,24 +1,42 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { signup } from "../api/auth";
+import { setUser } from "../redux/authSlice";
 
 const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     try {
       const data = await signup({ name, email, password });
-      localStorage.setItem("userToken", data.token);
+      dispatch(
+        setUser({
+          user: {
+            _id: data._id,
+            name: data.name,
+            email: data.email,
+          },
+          token: data.token,
+        })
+      );
+
       navigate("/dashboard");
     } catch (err) {
       setError(err.message || "Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -56,8 +74,9 @@ const SignUp = () => {
           <button
             type="submit"
             className="w-full bg-purple-500 hover:bg-purple-600 text-white py-2 rounded-lg transition"
+            disabled={loading}
           >
-            Sign Up
+            {loading ? "Singing Up..." : "Sign Up"}
           </button>
         </form>
 
