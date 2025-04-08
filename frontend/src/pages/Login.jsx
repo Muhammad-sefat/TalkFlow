@@ -4,6 +4,7 @@ import { login, googleLogin } from "../api/auth";
 import { GoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/authSlice";
+import GoogleAuthButton from "../components/GoogleAuthButton";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -88,14 +89,7 @@ const Login = () => {
 
         <div className="text-center my-4">OR</div>
 
-        <GoogleLogin
-          clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-          buttonText="Sign in with Google"
-          onSuccess={handleGoogleSuccess}
-          onFailure={handleGoogleFailure}
-          cookiePolicy={"single_host_origin"}
-          className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg transition"
-        />
+        <GoogleAuthButton label="Sign In with Google" />
 
         <p className="text-center mt-4 text-gray-700">
           Don't have an account?{" "}

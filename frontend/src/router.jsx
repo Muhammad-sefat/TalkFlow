@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import About from "./components/About";
 import Friends from "./components/Friends";
 import Chat from "./components/Chat";
+import OAuthSuccess from "./pages/OAuthSuccess";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
   {
     path: "/sign-up",
     element: <SignUp />,
+  },
+  {
+    path: "/oauth-success",
+    element: <OAuthSuccess />,
   },
   {
     path: "/dashboard",

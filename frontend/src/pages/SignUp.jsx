@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signup } from "../api/auth";
 import { setUser } from "../redux/authSlice";
+import GoogleAuthButton from "../components/GoogleAuthButton";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -82,9 +83,7 @@ const SignUp = () => {
 
         <div className="text-center my-4">OR</div>
 
-        <button className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg transition">
-          Sign up with Google
-        </button>
+        <GoogleAuthButton label="Sign up with Google" />
 
         <p className="text-center mt-4 text-gray-700">
           Already have an account?{" "}

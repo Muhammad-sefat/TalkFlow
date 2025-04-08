@@ -17,13 +17,18 @@ passport.use(
         if (!user) {
           user = await User.create({
             name: profile.displayName,
-            email: profile.emails[0].value,
-            password: "google-auth", // placeholder
+            email,
+            password: "google-auth",
           });
         }
 
         const token = generateToken(user._id);
-        return done(null, { user, token });
+        return done(null, {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          token,
+        });
       } catch (error) {
         return done(error, null);
       }

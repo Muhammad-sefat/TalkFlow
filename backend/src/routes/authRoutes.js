@@ -16,10 +16,15 @@ router.get(
 // Google Callback Route
 router.get(
   "/google/callback",
-  passport.authenticate("google", { failureRedirect: "/" }),
+  passport.authenticate("google", { session: false, failureRedirect: "/" }),
   (req, res) => {
-    const token = req.user.token;
-    res.redirect(`http://localhost:3000/dashboard?token=${token}`);
+    const { token, name, email } = req.user;
+
+    const redirectUrl = `http://localhost:5173/oauth-success?token=${token}&name=${encodeURIComponent(
+      name
+    )}&email=${encodeURIComponent(email)}`;
+
+    res.redirect(redirectUrl);
   }
 );
 
